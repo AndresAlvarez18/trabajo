@@ -1,0 +1,106 @@
+package salacine1;
+
+import java.util.Scanner;
+public class cinemenu {
+
+	public cinemenu() {
+	}
+
+	public static int filas = 8;
+    public static int asientosfila = 8;
+    public static int[][] asientos = new int[filas][asientosfila];
+    public static Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        inicializarAsientos();
+        mostrarAsientos();
+
+        boolean seguirReservando = true;
+        while (seguirReservando) {
+            int opcion;
+            System.out.println("1. Reservar un asiento");
+            System.out.println("2. Reservar múltiples asientos");
+            System.out.println("0. Salir");
+            System.out.print("Ingrese su opción: ");
+            opcion = leerEntero();
+            switch (opcion) {
+                case 1:
+                    reservarAsiento();
+                    mostrarAsientos();
+                    break;
+                case 2:
+                    reservarMultiplesAsientos();
+                    mostrarAsientos();
+                    break;
+                case 0:
+                    seguirReservando = false;
+                    break;
+                default:
+                    System.out.println("Opción no válida. Intente nuevamente.");
+            }
+        }
+    }
+
+    public static void inicializarAsientos() {
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < asientosfila; j++) {
+                asientos[i][j] = 0;
+            }
+        }
+    }
+
+    public static void mostrarAsientos() {
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < asientosfila; j++) {
+                System.out.print((asientos[i][j] == 0 ? "[ ]" : "X") + "\t");
+            }
+            System.out.println();
+        }
+    }
+
+    public static void reservarAsiento() {
+        int fila, asiento;
+        do {
+            System.out.println("Ingrese el número de fila (1-" + filas + ") o 0 para salir: ");
+            fila = leerEntero();
+            if (fila == 0) return;
+            System.out.println("Ingrese el número de asiento (1-" + asientosfila + "): ");
+            asiento = leerEntero();
+        } while (!reservarAsiento(fila, asiento));
+        System.out.println("Asiento reservado correctamente!");
+    }
+
+    public static void reservarMultiplesAsientos() {
+        System.out.println("Ingrese la cantidad de asientos que desea reservar: ");
+        int cantidad = leerEntero();
+        for (int i = 0; i < cantidad; i++) {
+            System.out.println("Asiento " + (i + 1) + " de " + cantidad + ":");
+            reservarAsiento();
+        }
+        System.out.println("Asientos reservados correctamente!");
+    }
+
+    public static boolean reservarAsiento(int fila, int asiento) {
+        if (fila < 1 || fila > filas || asiento < 1 || asiento > asientosfila) {
+            System.out.println("Asiento fuera de rango. Intente nuevamente.");
+            return false;
+        }
+
+        if (asientos[fila - 1][asiento - 1] == 1) {
+            System.out.println("¡El asiento ya está ocupado! Por favor, seleccione otro.");
+            return false;
+        }
+
+        asientos[fila - 1][asiento - 1] = 1;
+        return true;
+    }
+
+    public static int leerEntero() {
+        try {
+            return Integer.parseInt(scanner.nextLine().trim());
+        } catch (NumberFormatException e) {
+            System.out.println("Entrada no válida. Ingrese un número entero.");
+            return leerEntero();
+        }
+    }
+}
