@@ -1,0 +1,75 @@
+package matriz;
+import java.util.Scanner;
+
+public class matriz {
+
+	public matriz() {
+	}
+
+	public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Ingrese el tamaño de la matriz");
+        int tamano = scanner.nextInt();
+
+        int[][] matriz = crearMatrizAleatoria(tamano);
+
+        // Imprimir la matriz
+        System.out.println("Matriz " + tamano + "x" + tamano + ":");
+        imprimirMatriz(matriz);
+
+        System.out.println("¿Qué diagonal desea multiplicar?");
+        System.out.println("1. Diagonal uno");
+        System.out.println("2. Diagonal dos");
+        int opcion = scanner.nextInt();
+
+        int resultado = 1;
+        if (opcion == 1) {
+            resultado = multiplicarDiagonalPrincipal(matriz);
+        } else if (opcion == 2) {
+            resultado = multiplicarDiagonalSecundaria(matriz);
+        } else {
+            System.out.println("Opción no válida");
+            return;
+        }
+
+        System.out.println("El producto de la diagonal seleccionada es: " + resultado);
+    }
+
+    public static int[][] crearMatrizAleatoria(int tamano) {
+        int[][] matriz = new int[tamano][tamano];
+        Random rand = new Random();
+        for (int i = 0; i < tamano; i++) {
+            for (int j = 0; j < tamano; j++) {
+                matriz[i][j] = rand.nextInt(10);
+            }
+        }
+        return matriz;
+    }
+
+    public static void imprimirMatriz(int[][] matriz) {
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[0].length; j++) {
+                System.out.print(matriz[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    public static int multiplicarDiagonalPrincipal(int[][] matriz) {
+        int resultado = 1;
+        for (int i = 0; i < matriz.length; i++) {
+            resultado *= matriz[i][i];
+        }
+        return resultado;
+    }
+
+    public static int multiplicarDiagonalSecundaria(int[][] matriz) {
+        int resultado = 1;
+        for (int i = 0; i < matriz.length; i++) {
+            resultado *= matriz[i][matriz.length - 1 - i];
+        }
+        return resultado;
+    }
+}
+
